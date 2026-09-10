@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gene Database</title>
+    <!-- Link your static CSS file -->
+    <link rel="stylesheet" href="../public/css/style.css">
+    <style>
+        button {
+            width: 10%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+
+
+<body>
+    <div class="search-container">
+        <input type="text" id="geneSearch" onkeyup="filterGenes()"
+            placeholder="Search genes by name, species, or sequence...">
+    </div>
+
+    <div class="table-wrap">
+        <table id="oligos" class="sortable">
+            <thead>
+                <tr>
+                    <th class="sticky-col">Gene Name</th>
+                    <th>Species</th>
+                    <th>FASTA Sequence</th>
+                    <th>GC Content (%)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (genes && genes.length> 0) { %>
+                    <% genes.forEach(gene=> { %>
+                        <tr>
+                            <td class="sticky-col"><strong>
+                                    <%= gene.geneName %>
+                                </strong></td>
+                            <td>
+                                <%= gene.species %>
+
+                            </td>
+                            <td>
+                                <%= gene.fastaSeq %>
+                            </td>
+                            <td>
+                                <%= gene.gc_content %>%
+                            </td>
+                        </tr>
+                        <% }) %>
+                            <% } else { %>
+                                <tr>
+                                    <td colspan="4">No genes found in the database.</td>
+                                </tr>
+                                <% } %>
+            </tbody>
+        </table>
+        <form id="geneNameform" action="/addGene" onsubmit="return validateForm()">
+            <button type="add_gene_button">Add New Gene</button>
+    </div>
+
+</body>
+
+</html>
+
+<script>
+    function filterGenes() {
+        // Get search input and convert to lowercase
+        const input = document.getElementById("geneSearch");
+        const filter = input.value.toLowerCase();
+
+        // Get table rows inside tbody
+        const table = document.getElementById("oligos");
+        const tr = table.getElementsByTagName("tr");
+
+        // Loop through all table rows (skipping the header)
+        for (let i = 1; i < tr.length; i++) {
+            // Concatenate text content of Gene Name (col 0) and Species (col 1)
+            const nameCol = tr[i].getElementsByTagName("td")[0];
+            const speciesCol = tr[i].getElementsByTagName("td")[1];
+
+            if (nameCol || speciesCol) {
+                const nameText = nameCol ? nameCol.textContent || nameCol.innerText : "";
+                const speciesText = speciesCol ? speciesCol.textContent || speciesCol.innerText : "";
+
+                // Check if search query matches either column
+                if (nameText.toLowerCase().includes(filter) || speciesText.toLowerCase().includes(filter)) {
+                    tr[i].style.display = ""; // Show row
+                } else {
+                    tr[i].style.display = "none"; // Hide row
+                }
+            }
+        }
+    }
+</script>
