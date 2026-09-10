@@ -1,0 +1,309 @@
+.table-wrap {
+    max-height: 420px;
+    /* adjust as you like */
+    overflow-y: auto;
+    /* right-hand vertical scrollbar */
+    overflow-x: auto;
+    /* horizontal scrollbar if many columns */
+    border: 1px solid #eaeaea;
+    border-radius: 10px;
+    background: #fff;
+}
+
+#oligos {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10px;
+    color: black;
+    border-collapse: collapse;
+    width: max-content;
+    /* allow wide tables */
+    min-width: 100%;
+
+
+}
+
+#oligos th {
+    border: 1px solid #ddd;
+    padding: 8px;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+#oligos .sticky-col {
+    position: sticky;
+    left: 0;
+    z-index: 3;
+    background: inherit;
+}
+
+#oligos td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    overflow-x: hidden;
+    white-space: nowrap;
+
+}
+
+#oligos tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#oligos tr:hover {
+    background-color: #ddd;
+}
+
+#oligos th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #1f6380;
+    color: white;
+}
+
+.sr-only {
+    position: absolute;
+    top: -30em;
+}
+
+table.sortable td,
+table.sortable th {
+    padding: 0.125em 0.25em;
+    width: 8em;
+}
+
+table.sortable th {
+    font-weight: bold;
+    border-bottom: thin solid #888;
+    position: relative;
+    color: white;
+}
+
+table.sortable th.no-sort {
+    padding-top: 0.35em;
+    color: white;
+}
+
+table.sortable th:nth-child(5) {
+    width: 10em;
+    color: white;
+}
+
+table.sortable th button {
+    position: absolute;
+    padding: 4px;
+    margin: 1px;
+    font-size: 100%;
+    font-weight: bold;
+    background: transparent;
+    border: none;
+    display: inline;
+    right: 0;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    text-align: left;
+    outline: none;
+    cursor: pointer;
+    color: white;
+}
+
+table.sortable th button span {
+    position: absolute;
+    right: 4px;
+}
+
+table.sortable th[aria-sort="descending"] span::after {
+    content: "▼";
+    color: black;
+    font-size: 100%;
+    top: 0;
+}
+
+table.sortable th[aria-sort="ascending"] span::after {
+    content: "▲";
+    color: black;
+    font-size: 100%;
+    top: 0;
+}
+
+table.show-unsorted-icon th:not([aria-sort]) button span::after {
+    content: "♢";
+    color: white;
+    font-size: 100%;
+    position: relative;
+    top: -3px;
+    left: -4px;
+}
+
+table.sortable td.num {
+    text-align: right;
+}
+
+table.sortable tbody tr:nth-child(odd) {
+    background-color: #ddd;
+}
+
+/* Focus and hover styling */
+
+table.sortable th button:focus,
+table.sortable th button:hover {
+    padding: 2px;
+    border: 2px solid white;
+    background-color: #abc5d2;
+    color: black;
+}
+
+table.sortable th button:focus span,
+table.sortable th button:hover span {
+    right: 2px;
+}
+
+table.sortable th:not([aria-sort]) button:focus span::after,
+table.sortable th:not([aria-sort]) button:hover span::after {
+    content: "▼";
+    color: black;
+    font-size: 100%;
+    top: 0;
+}
+
+.icon-button {
+    background: url(/image/list.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 40px;
+    /* make this the size of your image */
+    border: none;
+    cursor: pointer;
+    float: right;
+    padding-right: 10 px;
+    padding-left: 30px;
+}
+
+.icon2-button {
+    background: url(/image/download.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 40px;
+    /* make this the size of your image */
+    border: none;
+    cursor: pointer;
+    float: right;
+    padding-right: 10 px;
+    padding-left: 30px;
+}
+
+.icon3-button {
+    background: url(/image/convert.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 40px;
+    /* make this the size of your image */
+    border: none;
+    float: right;
+    cursor: pointer;
+    padding-right: 10 px;
+    padding-left: 30px;
+}
+
+.icon-container {
+    display: grid;
+    grid-gap: 5px;
+    border: 0px solid black;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    padding: 5px 5px;
+    text-align: center;
+    width: 20%;
+    float: middle;
+    margin-top: 0px;
+    margin-left: 600px;
+    position: relative;
+    left: 30px;
+}
+
+.sel {
+    border-radius: 25px;
+    margin-top: 10px;
+
+}
+
+.list {
+    border-radius: 25px;
+    vertical-align: top;
+}
+
+.download {
+    border-radius: 25px;
+    vertical-align: top;
+    margin-right: 100px;
+}
+
+.sel {
+    grid-column: 1 / span 1;
+    grid-row: 1;
+    align-self: start;
+}
+
+.list {
+    grid-column: 2 / span 1;
+    grid-row: 1;
+    align-self: start;
+}
+
+.download {
+    grid-column: 3/ span 1;
+    grid-row: 1;
+    align-self: start;
+}
+
+
+.multipleSelection {
+    width: 150px;
+    background-color: #efefef;
+}
+
+.selectBox {
+    position: relative;
+    font-size: 10px;
+}
+
+.selectBox select {
+    width: 100%;
+
+}
+
+.overSelect {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+#checkBoxes {
+    display: none;
+    border: 1px #dadada solid;
+    height: 100px;
+    overflow-y: scroll;
+    align-items: start;
+}
+
+#checkBoxes label {
+    display: block;
+    font-size: 10px;
+}
+
+#checkBoxes label:hover {
+    background-color: #bfcac9;
+}
+
+@media screen and (max-width: 600px) {
+
+    .col-25,
+    .col-75,
+    input[type=submit] {
+        width: 100%;
+        margin-top: 0;
+    }
+}
