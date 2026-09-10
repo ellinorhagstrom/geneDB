@@ -2,6 +2,8 @@
 require("dotenv").config();
 const connectDB = require("./database/db");
 const geneRoutes = require("./forms/geneRoute");
+const displayRoutes = require('./forms/displayGenesRoutes')
+const path = require('path');
 const express = require('express');
 
 const PORT = process.env.PORT;
@@ -18,38 +20,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 //Ensures users can access the html and CSS directly via browser navigation - ensures the visuals
-//Start this if you want to use the HTML to visualize code, otherwise it overwrites the other visuals.
-// app.use(express.static(path.join(__dirname, `public`)));
+app.use(express.static(path.join(__dirname, `public`)));
 
 app.set('view engine', 'ejs'); //Starts visual engine?
-app.set('addGene', './views'); // Points to the view file that display home screen
+app.set('views', './views'); // Points to the view folder
 
-app.use('/', geneRoutes);
-
-//Creates a new Gene document in MongoDB using incoming request data
-// app.post('/hej', async (req, res) => {
-//     try {
-//         // req.body contains the JSON sent from frontend
-//         const newGene = await Gene.create(req.body);
-
-//         // Respond with a 201 (Created) status code and the saved database object
-//         res.status(201).json(newGene);
-//     } catch (err) {
-//         // Handle validation errors or duplicate key issues
-//         res.status(400).json({ error: err.message });
-//     }
-// });
-
-
-//Displays the documents in the database as a json in browser
-// app.get('/', async (req, res) => {
-//     try {
-//         const genes = await Gene.find();
-//         res.json(genes);
-//     } catch (err) {
-//         res.status(500).json({ error: err.message });
-//     }
-// });
+app.use('/addGene', geneRoutes); // chooses addGene file from the views foulder
+app.use('/displayGenes', displayRoutes)
 
 
 //Launches the server
