@@ -1,4 +1,3 @@
-<!-- view/index.ejs ! -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -76,6 +75,12 @@
             margin-bottom: 20px;
         }
 
+        .gcContent {
+            color: rgb(128, 0, 100);
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
         .error {
             color: red;
             text-align: center;
@@ -95,22 +100,34 @@
             <input type="text" id="species" name="species">
             <label for="fastaSeq">Fasta Sequence:</label>
             <input type="text" id="fastaSeq" name="fastaSeq">
-            <button type="submit">Submit</button>
+            <% if (gcContent !==null && gcContent !==undefined) { %>
+                <p class="gcContent">Calculated GC Content: <strong>
+                        <%= gcContent %>%
+                    </strong></p>
+                <% } %>
+                    <button type="submit">Submit</button>
+        </form>
+        <form id="viewGenes" action="/displayGenes">
+            <button type="submit">View All Genes</button>
+
         </form>
         <% if (message) { %>
             <p class="message">
                 <%= message %>
             </p>
-            <% } else if (error) { %>
-                <p class="error">
-                    <%= error %>
-                </p>
-                <% } %>
+            <% } %>
+
+
+                <% if (error) { %>
+                    <p class="error">
+                        <%= error %>
+                    </p>
+                    <% } %>
     </div>
 
     <script>
         function validateForm() {
-            var geneName = document.getElementById("name").value;
+            var geneName = document.getElementById("geneName").value;
             var species = document.getElementById("species").value;
             var fastaSeq = document.getElementById("fastaSeq").value;
 
