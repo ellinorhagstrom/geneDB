@@ -16,30 +16,39 @@ router.post('/', async (req, res) => {
     try {
         const { geneName, species, fastaSeq } = req.body;
 
-        //Validation for geneName to not be number
-        if (!isNaN(species) && species.trim() !== "") {
+        // Validation for geneName to not be number
+        if (!geneName || !geneName.trim() || !fastaSeq || !fastaSeq.trim()) {
             return res.render('addGene', {
                 message: null,
-                error: 'Gene name cannot be a number.',
+                error: 'Gene name and sequence are required.',
                 gcContent: null
             });
         }
 
-        //Validates that sequences is only of real nucleotides
-        const nucleotideRegex = /^[ATCGU]+$/i;
-        if (fastaSeq && !nucleotideRegex.test(fastaSeq.trim())) {
+        // Validation for species to not be purely numeric
+        if (species && !isNaN(species) && species.trim() !== "") {
             return res.render('addGene', {
                 message: null,
-                error: 'Invalid sequence: Must only contain A, T, C, G, or U characters.',
+                error: 'Species cannot be a number.',
+                gcContent: null
+            });
+        }
+
+        // Validates that the sequence only contains nucleotide characters
+        const nucleotideRegex = /^[ACGTU]+$/i;
+        if (!nucleotideRegex.test(fastaSeq.trim())) {
+            return res.render('addGene', {
+                message: null,
+                error: 'Invalid sequence: must only contain A, T, C, G, or U characters.',
                 gcContent: null
             });
         }
 
 
         const newGene = new Gene({
-            geneName: geneName,
-            species: species || undefined,
-            fastaSeq: fastaSeq
+            geneName: geneName.trim(),
+            species: species?.trim() || undefined,
+            fastaSeq: fastaSeq.trim().toUpperCase()
         });
 
         const savedGene = await newGene.save(); //calculates the pre('save') method
@@ -50,13 +59,20 @@ router.post('/', async (req, res) => {
             gcContent: savedGene.gc_content
         });
     } catch (err) {
+        const errorMessage = err.code === 11000
+            ? 'A gene with that name already exists in the database.'
+            : 'Failed to add gene: ' + err.message;
+
         res.render('addGene', {
             message: null,
-            error: 'Failed to add gene: ' + err.message,
+            error: errorMessage,
             gcContent: null
         });
     }
 });
+
+
+
 
 
 module.exports = router;
