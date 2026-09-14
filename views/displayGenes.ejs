@@ -5,31 +5,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gene Database</title>
-    <!-- Link your static CSS file -->
-    <link rel="stylesheet" href="../public/css/style.css">
+    <!-- Link your static CSS files -->
+    <link rel="stylesheet" href="/css/table.css">
+    <link rel="stylesheet" href="/css/searchBar.css">
     <style>
-        button {
+        .add-gene-link {
+            display: inline-block;
             width: 10%;
+            min-width: 140px;
             padding: 10px;
-            margin-bottom: 15px;
+            margin: 15px 0;
             border: 1px solid #ccc;
             border-radius: 5px;
             box-sizing: border-box;
-        }
-
-        button {
-            background-color: #007bff;
+            background-color: #1f6380;
             color: #fff;
+            text-align: center;
+            text-decoration: none;
             cursor: pointer;
         }
 
-        button:hover {
-            background-color: #0056b3;
+        .add-gene-link:hover {
+            background-color: #17506a;
         }
     </style>
 </head>
-
-
 
 <body>
     <div class="search-container">
@@ -56,7 +56,6 @@
                                 </strong></td>
                             <td>
                                 <%= gene.species %>
-
                             </td>
                             <td>
                                 <%= gene.fastaSeq %>
@@ -73,41 +72,40 @@
                                 <% } %>
             </tbody>
         </table>
-        <form id="geneNameform" action="/addGene" onsubmit="return validateForm()">
-            <button type="add_gene_button">Add New Gene</button>
     </div>
 
-</body>
+    <a href="/addGene" class="add-gene-link">Add New Gene</a>
 
-</html>
+    <script>
+        function filterGenes() {
+            // Get search input and convert to lowercase
+            const input = document.getElementById("geneSearch");
+            const filter = input.value.toLowerCase();
 
-<script>
-    function filterGenes() {
-        // Get search input and convert to lowercase
-        const input = document.getElementById("geneSearch");
-        const filter = input.value.toLowerCase();
+            // Get table rows inside tbody
+            const table = document.getElementById("oligos");
+            const tr = table.getElementsByTagName("tr");
 
-        // Get table rows inside tbody
-        const table = document.getElementById("oligos");
-        const tr = table.getElementsByTagName("tr");
+            // Loop through all table rows (skipping the header)
+            for (let i = 1; i < tr.length; i++) {
+                // Concatenate text content of Gene Name (col 0) and Species (col 1)
+                const nameCol = tr[i].getElementsByTagName("td")[0];
+                const speciesCol = tr[i].getElementsByTagName("td")[1];
 
-        // Loop through all table rows (skipping the header)
-        for (let i = 1; i < tr.length; i++) {
-            // Concatenate text content of Gene Name (col 0) and Species (col 1)
-            const nameCol = tr[i].getElementsByTagName("td")[0];
-            const speciesCol = tr[i].getElementsByTagName("td")[1];
+                if (nameCol || speciesCol) {
+                    const nameText = nameCol ? nameCol.textContent || nameCol.innerText : "";
+                    const speciesText = speciesCol ? speciesCol.textContent || speciesCol.innerText : "";
 
-            if (nameCol || speciesCol) {
-                const nameText = nameCol ? nameCol.textContent || nameCol.innerText : "";
-                const speciesText = speciesCol ? speciesCol.textContent || speciesCol.innerText : "";
-
-                // Check if search query matches either column
-                if (nameText.toLowerCase().includes(filter) || speciesText.toLowerCase().includes(filter)) {
-                    tr[i].style.display = ""; // Show row
-                } else {
-                    tr[i].style.display = "none"; // Hide row
+                    // Check if search query matches either column
+                    if (nameText.toLowerCase().includes(filter) || speciesText.toLowerCase().includes(filter)) {
+                        tr[i].style.display = ""; // Show row
+                    } else {
+                        tr[i].style.display = "none"; // Hide row
+                    }
                 }
             }
         }
-    }
-</script>
+    </script>
+</body>
+
+</html>
