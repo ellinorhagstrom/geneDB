@@ -2,6 +2,7 @@
 require("dotenv").config();
 const connectDB = require("./database/db");
 const geneRoutes = require("./forms/geneRoute");
+const geneAccessionRoutes = require("./forms/geneAccessionRoute");
 const displayRoutes = require('./forms/displayGenesRoutes')
 const path = require('path');
 const express = require('express');
@@ -27,7 +28,7 @@ app.set('views', './views'); // Points to the view folder
 
 app.use('/addGene', geneRoutes); // chooses addGene file from the views foulder
 app.use('/displayGenes', displayRoutes)
-
+app.use('/addAccessionGene', geneAccessionRoutes);
 
 //Launches the server
 app.listen(PORT, function (err) {
