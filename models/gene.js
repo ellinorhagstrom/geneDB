@@ -15,24 +15,24 @@ const geneSchema = new mongoose.Schema({
     species: {
         type: String, required: false, default: "unknown", trim: true, validate: {
             validator: function (v) {
-                // Returns false if the input is purely numeric
+                // Returns false if the input is only numeric
                 return isNaN(v);
             },
             message: props => `${props.value} is a number! Gene name must contain text.`
         }
     },
     fastaSeq: {
-        type: String, required: true, uppercase: true, trim: true, match: [
-            /^[ATCGU]+$/i,
-            'FASTA sequence must only contain valid nucleotide characters (A, T, C, G, U).'
-        ]
+        type: String,
+        required: true,
+        // Match nucleotide seqeunces only
+        match: [/^[ACGTU]+$/i, 'Invalid sequence format']
     },
     gc_content: {
         type: Number
     },
 },
     // {
-    //     timestamps: true
+    //     timestamps: true //If i want to have when things where added
     // }
 )
 
@@ -43,7 +43,7 @@ geneSchema.pre('save', function () {
     const sequence = this.fastaSeq;
 
     if (sequence && sequence.length > 0) {
-        const gcMatches = sequence.match(/[GC]/g);
+        const gcMatches = sequence.match(/[GC]/gi);
         const gcCount = gcMatches ? gcMatches.length : 0;
 
         const gcPercentage = (gcCount / sequence.length) * 100;
@@ -53,10 +53,8 @@ geneSchema.pre('save', function () {
     }
 });
 
-//MODEL
+//Model
 const Gene = mongoose.model("Gene", geneSchema);
 
 //Module exports
-module.exports = mongoose.model("Gene", geneSchema);
-
-
+module.exports = Gene;
