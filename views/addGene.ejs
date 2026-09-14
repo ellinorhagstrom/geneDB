@@ -4,25 +4,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
+    <title>Add Gene - Gene Database</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f9f9f9;
             margin: 0;
-            padding: 0;
+            padding: 40px 20px;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            gap: 30px;
         }
 
         .container {
             max-width: 400px;
+            width: 100%;
             padding: 20px;
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
         }
 
         h1 {
@@ -48,8 +51,6 @@
         }
 
         input[type="text"],
-        input[type="text"],
-        input[type="text"],
         button {
             width: 100%;
             padding: 10px;
@@ -63,6 +64,7 @@
             background-color: #007bff;
             color: #fff;
             cursor: pointer;
+            border: none;
         }
 
         button:hover {
@@ -95,11 +97,11 @@
         <p>This is a simple form to save a gene to the database.</p>
         <form id="geneNameform" action="/addGene" method="post" onsubmit="return validateForm()">
             <label for="geneName">Name:</label>
-            <input type="text" id="geneName" name="geneName">
+            <input type="text" id="geneName" name="geneName" required>
             <label for="species">Species:</label>
             <input type="text" id="species" name="species">
-            <label for="fastaSeq">Fasta Sequence:</label>
-            <input type="text" id="fastaSeq" name="fastaSeq">
+            <label for="fastaSeq">Nucleotide Sequence:</label>
+            <input type="text" id="fastaSeq" name="fastaSeq" required>
             <% if (gcContent !==null && gcContent !==undefined) { %>
                 <p class="gcContent">Calculated GC Content: <strong>
                         <%= gcContent %>%
@@ -107,36 +109,53 @@
                 <% } %>
                     <button type="submit">Submit</button>
         </form>
-        <form id="viewGenes" action="/displayGenes">
-            <button type="submit">View All Genes</button>
 
-        </form>
         <% if (message) { %>
             <p class="message">
                 <%= message %>
             </p>
             <% } %>
 
-
                 <% if (error) { %>
                     <p class="error">
                         <%= error %>
                     </p>
                     <% } %>
+
+                        <a href="/displayGenes" style="text-decoration: none;">
+                            <button type="button">View All Genes</button>
+                        </a>
+    </div>
+
+    <div class="container">
+        <h1>Add genes from accession number!</h1>
+        <p>This is a simple form to save a gene to the database from an NCBI accession number.</p>
+        <form id="accessionForm" action="/addAccessionGene" method="post" onsubmit="return validateAccessionForm()">
+            <label for="accessionNumber">Accession Number:</label>
+            <input type="text" id="accessionNumber" name="accessionNumber" required>
+            <button type="submit">Submit</button>
+        </form>
     </div>
 
     <script>
         function validateForm() {
-            var geneName = document.getElementById("geneName").value;
-            var species = document.getElementById("species").value;
-            var fastaSeq = document.getElementById("fastaSeq").value;
+            const geneName = document.getElementById("geneName").value.trim();
+            const fastaSeq = document.getElementById("fastaSeq").value.trim();
 
             if (geneName === "" || fastaSeq === "") {
                 alert("Please fill out all required fields.");
-                console.log("Please fill out all fields.");
                 return false;
             }
 
+            return true;
+        }
+
+        function validateAccessionForm() {
+            const accessionNumber = document.getElementById("accessionNumber").value.trim();
+            if (!accessionNumber) {
+                alert("Please enter an accession number.");
+                return false;
+            }
             return true;
         }
     </script>
